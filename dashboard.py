@@ -5,7 +5,7 @@ import gdown
 import os
 
 # Load the dataset
-file_id = "1Ijo5WbwFS_6lqGZ0AJS4Rokzv8XXApx6"
+file_id = "1RiDdj9E94O5EaQzh2hj2yMZR2K-EYNk0"
 output = "flights_cleaned.csv"
 file_id1="1RczhpYE722nFp5J7XGL3g-VQgBJjK2VH"
 output1="airports.csv"
@@ -17,8 +17,6 @@ if not os.path.exists(output):
 
 df = pd.read_csv(output,low_memory=False)
 
-# Randomly sample 100,000 rows (with all months included)
-df = df.sample(n=500000, random_state=42)
 
 airport_delay = pd.read_csv(output2,low_memory=False)
 airport_meta = pd.read_csv(output1,low_memory=False)
@@ -119,10 +117,17 @@ with col3:
 with col4:
     st.markdown("**📊 Avg. Delay & Cancellations by Airline**")
 
-    airline_df = filtered_df.groupby('AIRLINE').agg({
-        'DEPARTURE_DELAY': 'mean',
-        'CANCELLED': 'sum'
-    }).reset_index()
+    # Filter out early departures (i.e. only delayed flights)
+    filtered_delay = filtered_df[filtered_df['DEPARTURE_DELAY'] > 0]
+
+    # Calculate average delay only for delayed flights
+    avg_delay = filtered_delay.groupby('AIRLINE')['DEPARTURE_DELAY'].mean().reset_index()
+
+    # Calculate cancellations (can be from original full df)
+    cancellations = filtered_df.groupby('AIRLINE')['CANCELLED'].sum().reset_index()
+
+    # Merge both
+    airline_df = avg_delay.merge(cancellations, on='AIRLINE')
 
     # Melt dataframe to long format
     df_melted = airline_df.melt(id_vars='AIRLINE', value_vars=['DEPARTURE_DELAY', 'CANCELLED'],
