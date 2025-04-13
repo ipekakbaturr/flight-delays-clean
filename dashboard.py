@@ -17,7 +17,7 @@ st.write("✅ Script started...")
 if os.path.exists("flights_cleaned.csv"):
     st.write("✅ File found!")
 else:
-    st.write("❌ File not found!
+    st.write("❌ File not found!")
 # Now load it with pandas
 # Load selected columns only (reduce memory)
 
