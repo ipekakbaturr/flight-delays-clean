@@ -11,6 +11,13 @@ output = "flights_cleaned.csv"
 if not os.path.exists(output):
     gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False)
 
+st.write("✅ Script started...")
+
+# Check if file is downloaded
+if os.path.exists("flights_cleaned.csv"):
+    st.write("✅ File found!")
+else:
+    st.write("❌ File not found!
 # Now load it with pandas
 # Load selected columns only (reduce memory)
 
@@ -18,6 +25,8 @@ df = pd.read_csv(output)
 
 # Randomly sample 100,000 rows (with all months included)
 df = df.sample(n=100000, random_state=42)
+st.write("✅ File loaded successfully!")
+st.write("Shape of data:", df.shape)
 
 airport_delay = pd.read_csv("airport_delay_with_coords.csv")
 airport_meta = pd.read_csv("airports.csv")
