@@ -18,7 +18,7 @@ if not os.path.exists(output):
 df = pd.read_csv(output,low_memory=False)
 
 # Randomly sample 100,000 rows (with all months included)
-df = df.sample(n=100000, random_state=42)
+df = df.sample(n=500000, random_state=42)
 
 airport_delay = pd.read_csv(output2,low_memory=False)
 airport_meta = pd.read_csv(output1,low_memory=False)
