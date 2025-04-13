@@ -7,3 +7,5 @@ flights_new.csv
 flights_cleaned.csv
 flights_new.csv
 flights.csv
+airports.csv
+airports_delay_with_coords.csv
