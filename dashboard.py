@@ -7,29 +7,21 @@ import os
 # Load the dataset
 file_id = "1Ijo5WbwFS_6lqGZ0AJS4Rokzv8XXApx6"
 output = "flights_cleaned.csv"
+file_id1="1RczhpYE722nFp5J7XGL3g-VQgBJjK2VH"
+output1="airports.csv"
+file_id2="1PuoF0sWqW--vHqlHiLRnnRCOEClcj90Z"
+output2="airport_delay_with_coords.csv"
 
 if not os.path.exists(output):
     gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False)
-
-st.write("✅ Script started...")
-
-# Check if file is downloaded
-if os.path.exists("flights_cleaned.csv"):
-    st.write("✅ File found!")
-else:
-    st.write("❌ File not found!")
-# Now load it with pandas
-# Load selected columns only (reduce memory)
 
 df = pd.read_csv(output)
 
 # Randomly sample 100,000 rows (with all months included)
 df = df.sample(n=100000, random_state=42)
-st.write("✅ File loaded successfully!")
-st.write("Shape of data:", df.shape)
 
-airport_delay = pd.read_csv("airport_delay_with_coords.csv")
-airport_meta = pd.read_csv("airports.csv")
+airport_delay = pd.read_csv(output2)
+airport_meta = pd.read_csv(output1)
 df['ORIGIN_AIRPORT'] = df['ORIGIN_AIRPORT'].astype(str)
 airport_meta['IATA_CODE'] = airport_meta['IATA_CODE'].astype(str)
 
