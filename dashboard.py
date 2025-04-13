@@ -12,7 +12,13 @@ if not os.path.exists(output):
     gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False)
 
 # Now load it with pandas
+# Load selected columns only (reduce memory)
+
 df = pd.read_csv(output)
+
+# Randomly sample 100,000 rows (with all months included)
+df = df.sample(n=100000, random_state=42)
+
 airport_delay = pd.read_csv("airport_delay_with_coords.csv")
 airport_meta = pd.read_csv("airports.csv")
 df['ORIGIN_AIRPORT'] = df['ORIGIN_AIRPORT'].astype(str)
