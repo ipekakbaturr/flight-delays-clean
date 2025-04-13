@@ -15,13 +15,13 @@ output2="airport_delay_with_coords.csv"
 if not os.path.exists(output):
     gdown.download(f"https://drive.google.com/uc?id={file_id}", output, quiet=False)
 
-df = pd.read_csv(output)
+df = pd.read_csv(output,low_memory=False)
 
 # Randomly sample 100,000 rows (with all months included)
 df = df.sample(n=100000, random_state=42)
 
-airport_delay = pd.read_csv(output2)
-airport_meta = pd.read_csv(output1)
+airport_delay = pd.read_csv(output2,low_memory=False)
+airport_meta = pd.read_csv(output1,low_memory=False)
 df['ORIGIN_AIRPORT'] = df['ORIGIN_AIRPORT'].astype(str)
 airport_meta['IATA_CODE'] = airport_meta['IATA_CODE'].astype(str)
 
